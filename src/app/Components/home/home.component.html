@@ -1,0 +1,88 @@
+<!-- <div class="mb-3">
+    <label for="" class="form-label">City</label>
+    <select class="form-select form-select-lg" name="" id="">
+        <option selected>Select one</option>
+        <option value="">New Delhi</option>
+        <option value="">Istanbul</option>
+        <option value="">Jakarta</option>
+    </select>
+</div>
+<hr>
+<table class="table table-hover table-striped table-dark">
+    <thead >
+        <tr >
+            <th>index</th>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Salary</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of storeObjs ; let index =index">
+            <td>{{index+1}}</td>
+            <td>{{data.id}}</td>
+            <td>{{data.name}}</td>
+            <td>{{data.age}}</td>
+            <td>{{data.salary}}</td>
+        </tr>
+    </tbody>
+</table> -->
+
+<!-- to use two way binding [(ngModel)] "banan in the box should import formModule"-->
+
+<div class="mb-3">
+    <label for="Category" class="form-label">Category Of Product</label>
+    <select class="form-select form-select-lg" name="Category" id="" [(ngModel)]="selectedCategoryId">
+        <option [value]="item.categoryId" *ngFor="let item of categoryList">{{item.categoryName}}</option>
+    </select>
+</div>
+<hr>
+<div>
+    [To Removed (Selected category id :{{selectedCategoryId}})]
+    <button class="btn btn-secondary" (click)="ResetCategory()">Reset category</button>
+</div>
+<hr>
+<div class="table-responsive">
+    <table class="table table-hover table-striped ">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Image</th>
+                <th>Price</th>
+                <th>CountOfItem</th>
+                <th>Buy</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- <tr *ngFor="let item of productList ; let i = index ; trackBy:prdTrackbyFun" [class.d-none]="selectedCategoryId!=item.categoryId" [style.background-color]="item.productQuantity==0?'yellow':'gray'"> -->
+
+            <tr *ngFor="let item of productList ; let i = index ; trackBy:prdTrackbyFun">
+                <!-- save navigation operator   ? -->
+                <td>{{item?.productId}}</td>
+                <td>{{item?.productName}}</td>
+                <!-- ng-container is better than div because not affected the dom -->
+                <ng-container  [ngSwitch]="item?.productQuantity">
+                    <td *ngSwitchCase="0">out of stock</td>
+                    <td *ngSwitchCase="1">one item avaiable</td>
+                    <td *ngSwitchCase="2">Two Item Avaiable</td>
+                    <td *ngSwitchDefault>{{item?.productQuantity}}</td>
+                </ng-container>
+                <!-- <td><img src="{{item.productImage}}" [alt]="item.productImageDescription"></td> -->
+                <td><img [src]="item?.productImage" [alt]="item?.productImageDescription"></td>
+                <td>{{item?.productPrice}}</td>
+                <!-- template variable starts with # and may reference to input  -->
+                <td><input #countItems type="number" value="0"></td>
+                <td><input type="button" class="btn btn-primary" value="buy"
+                        (click)="buy(item.productPrice,countItems.value)"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <label for="totalPrice">Total Price</label>
+    <input type="number" disabled name="totalPrice" value="{{totalPrice}}">
+</div>
